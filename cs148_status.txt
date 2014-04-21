@@ -22,4 +22,7 @@
  Assignment 4: CHECK
  warning: PD control should be applied to all joints
  
+ Assignment 5: UNCHECKED
+ error: endeffector does not converge to target for all tests
+ 
 
