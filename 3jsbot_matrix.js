@@ -179,6 +179,45 @@ generate_rotation_matrix_Z
 		return multMatrices;
 	}
 	
+	function matrix_multiply(mat1,mat2){
+		//Instantiate variables representing height and width of the output matrix, multMatrices
+		var height = mat1.length;
+		var width = mat2[0].length;
+		var mat1Width = mat1[0].length;
+		var multMatrices = new Array();
+		
+		//Create empty arrays for all rows of the multiplied matrix
+		for(var a = 0; a<height;a++){
+			multMatrices[a]=[];
+		}
+
+		//For each entry of the output matrix
+		for (var y = 0; y<height; y++){
+
+			for (var x = 0; x<width; x++){
+							
+				//Instantiate a variable for holding the tallied value for this index
+				var val=0;
+				//Iterate over all row of the output matrix
+				for (var i = 0; i<mat1Width; i++){
+
+					/*
+					console.log("HERE");
+					console.log(x);
+					console.log(y);
+					console.log(i);
+				*/
+					//add the multiplication of the two entries of interest to the val tally
+					val = val+mat1[y][i]*mat2[i][x];
+				}
+				//Set the val tally
+				multMatrices[y][x]=val;
+			}
+		}
+		
+		return multMatrices;
+	}
+	
 	/*
 	INPUT: values for roll, pitch, yaw
 	OUTPUT: a single matrix that is the rotation matrix for the input values
