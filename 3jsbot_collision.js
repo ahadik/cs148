@@ -171,7 +171,7 @@ function traverse_collision_forward_kinematics_joint(joint,mstack,q) {
     
 
     // compute matrix transform origin of joint in the local space of the parent link
-    var local_xform = matrix_multiply(generate_translation_matrix(q[0],q[1],q[2]), make_rotation_matrix(joint.origin.rpy[0],joint.origin.rpy[1],joint.origin.rpy[2]));
+    var local_xform = matrix_multiply(generate_translation_matrix(joint.origin.xyz[0],joint.origin.xyz[1],joint.origin.xyz[2]), make_rotation_matrix(joint.origin.rpy[0],joint.origin.rpy[1],joint.origin.rpy[2]));
     
     //var local_xform = matrix_multiply(generate_translation_matrix(joint.origin.xyz[0],joint.origin.xyz[1],joint.origin.xyz[2]),matrix_multiply(matrix_multiply(generate_rotation_matrix_Z(joint.origin.rpy[2]),generate_rotation_matrix_Y(joint.origin.rpy[1])),generate_rotation_matrix_X(joint.origin.rpy[0])));
 
