@@ -48,18 +48,20 @@
 	<script src="3jsbot_rrt_connect.js"></script> 
 	<script src="3jsbot_collision.js"></script> 
 	
-	<script src="worlds/world_basic.js"></script>
+<script src="worlds/world_random.js"></script>
 	<!--
-	<script src="worlds/world_empty.js"></script>
-	<script src="worlds/world_random.js"></script>
 	<script src="worlds/world_local_minima.js"></script>
+	<script src="worlds/world_basic.js"></script>
+	<script src="worlds/world_empty.js"></script>
+	
+	
 	<script src="worlds/world_s.js"></script>
 	-->
 	
 	<script src="3jsbot_controls.js"></script> 
 	<script src="3jsbot_pd_control.js"></script> 
 	<script src="3jsbot_inverse_kinematics.js"></script> 
-	<script src="3jsbot_potential_field.js"></script> 
+	<!-- <script src="3jsbot_potential_field.js"></script> -->
 	
 	<script src="3jsbot_quaternion.js"></script> 
 
@@ -165,6 +167,10 @@
 	
 	
 	function init_robot() {
+	
+	 	//	 initialize flags for executing planner
+	 	generating_motion_plan = false;
+    	generate_motion_plan = false;
 	        
 	    // ASSUME: robot kinematics are described separate js file (eg., "robot_urdf_example.js")
 	
@@ -246,14 +252,8 @@
 	
 	//This function is called from the stencil animate() function, instead of my_animate(). This function looks for key presses of interest, and then passes control along to my_animate() once key presses have been registered.
 	function keypressDetect(){
-
-		if(keyboard.pressed("m")){
-	    	toggle(function(){
-		    	my_animate();
-	    	}, "m", 'leap');
-	    }else{
-		    my_animate();
-	    }
+		my_animate();
+		
 	}
 	
 	//Take as an argument the my_animate() function as a callback. This prevents the main loop from looping around on the user while they're pressing the key and thus triggering flip-flopping of states.
@@ -385,6 +385,21 @@
 		
 	    // configuration space motion planning
 	    //robot_rrt_connect(q_desired);
+	    
+	       // configuration space motion planning
+	    if ((generate_motion_plan) && (!generating_motion_plan)) {
+	        robot_rrt_planner_init();
+	        generating_motion_plan = true;
+	        generate_motion_plan = false;
+	    }
+	    if (generating_motion_plan) {
+	        //robot_rrt_connect(q_desired);
+	        rrt_result = robot_rrt_planner_iterate();
+	        if (rrt_result === "reached") {
+	            //alert("home: reached");
+	            generating_motion_plan = false;
+	        }
+	    }
 	
 	    // Monte Carlo Localization (needs display map and simulated range sensing)
 	    // if we have time this semester

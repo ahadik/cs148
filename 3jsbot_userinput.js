@@ -82,6 +82,49 @@ function user_input() {
         robot.control.xyz[2] += -0.1 * robot.dir.lateral[2][0];
         robot.control.xyz[0] += -0.1 * robot.dir.lateral[0][0];
     }
+    
+     // generate motion plan
+    if ( keyboard.pressed("m") )
+        generate_motion_plan = true;
+    else{
+	    generate_motion_plan = false;
+    }
+        
+        // traverse generated motion plan
+    if ( keyboard.pressed("n") |  keyboard.pressed("b")) {
+        if (typeof robot_path !== 'undefined') {
+
+            // increment index
+            if ((keyboard.pressed("n"))&&(robot_path_traverse_idx<robot_path.length-1)){
+            	robot_path_traverse_idx++;
+            }
+            
+            if ((keyboard.pressed("b"))&&(robot_path_traverse_idx>0)){
+	            robot_path_traverse_idx--;
+            }
+                
+			
+             // set angle
+            robot.origin.xyz = [
+                robot_path[robot_path_traverse_idx].vertex[0],
+                robot_path[robot_path_traverse_idx].vertex[1],
+                robot_path[robot_path_traverse_idx].vertex[2]
+            ];
+
+            robot.origin.rpy = [
+                robot_path[robot_path_traverse_idx].vertex[3],
+                robot_path[robot_path_traverse_idx].vertex[4],
+                robot_path[robot_path_traverse_idx].vertex[5]
+            ];
+
+            for (x in robot.joints) {
+                //q_names[x] = q_start_config.length;
+                robot.joints[x].angle = robot_path[robot_path_traverse_idx].vertex[q_names[x]];
+            }
+        }
+    }
+        
+       
 
     /* CS148: user input for executing inverse kinematics iterations */
     if ( keyboard.pressed("p") )
