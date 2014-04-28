@@ -18,7 +18,7 @@
 //////////////////////////////////////////////////
 
 function init() {
-
+	time = Date.now();
 	var workingDiv = document.getElementById("working");
 
     // instantiate threejs scene graph
@@ -118,7 +118,7 @@ function init() {
     // initialize the active link/joint for control
     active_link = robot.base;
     active_joint = robot.links[active_link].children[0];
-    //robot.links[active_link].geom.material.wireframe = false; 
+    //robot.links[active_link].geom.material.wireframe = false;
     //robot.links[active_link].geom.material.opacity = 0.5;
     console.log(active_joint);
     robot.joints[active_joint].geom.material.wireframe = false; 
@@ -147,7 +147,8 @@ function init_robot_links_geoms() {
         scene.add(robot.links[x].geom);
         // bounding box of robot link in local link coordinates
 		robot.links[x].bbox = new THREE.Box3;
-    	robot.links[x].bbox = robot.links[x].bbox.setFromPoints(robot.links[robot.base].geom.geometry.vertices);
+    	//robot.links[x].bbox = robot.links[x].bbox.setFromPoints(robot.links[robot.base].geom.geometry.vertices);
+    	robot.links[x].bbox = robot.links[x].bbox.setFromPoints(robot.links[x].geom.geometry.vertices);
     }
 
     // need to know base link; add base link to threejs scene graph 

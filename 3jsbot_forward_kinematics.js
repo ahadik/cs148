@@ -18,6 +18,18 @@ traverse_forward_kinematics_joint
 compute_and_draw_heading
 */
 
+function test_draw(){
+	for (x in robot.joints){
+		console.log(robot.joints[x].xform);
+		simpleApplyMatrix(robot.joints[x].geom, matrix_2Darray_to_threejs(robot.joints[x].xform));
+	}
+	
+	for (x in robot.links){
+		console.log(robot.links[x].xform);
+		simpleApplyMatrix(robot.links[x].geom, matrix_2Darray_to_threejs(robot.links[x].xform));
+
+	}
+}
 
 function set_robot_parts(){
 	var x,tempmat;
@@ -77,16 +89,10 @@ function set_robot_parts(){
 		var quaternion_rotate_matrix = quaternion_to_rotation_matrix(normalized_quaternion);
 
 		active.DOF.rotate = quaternion_rotate_matrix;
-	
-		//active.servo.gain = 0;
-		//active.control = 0;
 
 		
-		
-		
         var xForm = multMultiMatrices([parentXForm,translationMatrix, rotateMatrix, robot.joints[x].DOF.rotate]);
-        
- //       console.log(robot.joints[x].control.rotate);
+
         
         robot.joints[x].xform = xForm;
         robot.links[robot.joints[x].child].xform = xForm;

@@ -64,23 +64,22 @@ function robot_iscollision() {
     q_names = {};  // store mapping between joint names and q DOFs
 
     for (x in robot.joints) {
-        	//console.log(new Error().lineNumber);
+
         q_names[x] = q_robot_config.length;
         q_robot_config = q_robot_config.concat(robot.joints[x].angle);
     }
 
     // test for collision and change base color based on the result
     if (robot_collision_test(q_robot_config)) {
-        	//console.log(new Error().lineNumber);
+        	
        robot.links[robot.base].geom.material.color = {r:1,g:0,b:0};
        robot.links[robot.base].geom.material.opacity = 1.0;
     }
     else {
-    	    	//console.log(new Error().lineNumber);
        robot.links[robot.base].geom.material.color = {r:0,g:0,b:1};
        robot.links[robot.base].geom.material.opacity = 0.7;
     }
-         	//console.log(new Error().lineNumber);
+     
 
 }
 
@@ -145,7 +144,7 @@ function traverse_collision_forward_kinematics_link(link,mstack,q) {
             ||
             (obstacle_local[0][0]>link.bbox.max.x+robot_obstacles[j].radius)
         ){
-        		    	//console.log(new Error().lineNumber);
+
                 in_collision = false;
         }
         if (
@@ -165,7 +164,18 @@ function traverse_collision_forward_kinematics_link(link,mstack,q) {
 
         // if obstacle lies within link extents along all dimensions, a collision is detected and return true
         if (in_collision){
-        	//console.log("1");
+//        	console.log(link.name);
+        /*
+        	console.log("bbox");
+        	console.log(link.bbox.min.y-robot_obstacles[j].radius);
+        	console.log(link.bbox.min.x-robot_obstacles[j].radius);
+        	console.log(link.bbox.max.y+robot_obstacles[j].radius);
+        	console.log(link.bbox.max.x+robot_obstacles[j].radius);
+        	console.log("local");
+        	console.log(obstacle_local[0][0]);
+        	console.log(obstacle_local[1][0]);
+        	console.log(obstacle_local[2][0]);
+        	*/
             return true;
         }
     }

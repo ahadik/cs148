@@ -48,8 +48,9 @@
 	<script src="3jsbot_rrt_connect.js"></script> 
 	<script src="3jsbot_collision.js"></script> 
 	
-<script src="worlds/world_random.js"></script>
+	<script src="worlds/world_random.js"></script>	
 	<!--
+
 	<script src="worlds/world_local_minima.js"></script>
 	<script src="worlds/world_basic.js"></script>
 	<script src="worlds/world_empty.js"></script>
@@ -252,7 +253,10 @@
 	
 	//This function is called from the stencil animate() function, instead of my_animate(). This function looks for key presses of interest, and then passes control along to my_animate() once key presses have been registered.
 	function keypressDetect(){
-		my_animate();
+		//if((Date.now()-time)<10000){
+			my_animate();
+		//}
+		
 		
 	}
 	

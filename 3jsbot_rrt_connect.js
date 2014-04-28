@@ -74,10 +74,10 @@ function rrt_extend(tree, neighbor, desiredIn, connectBool){
 	if((distance<epsilon)&&connectBool){
 
 		isConnected = true;
-    rrt_iterate=false;
+		rrt_iterate=false;
 		connect_trees(neighbor,desired);
-    //console.log("CONNECTED");
-    colorPath(neighbor,desiredIn);
+		//console.log("CONNECTED");
+    	colorPath(neighbor,desiredIn);
 		return false;
 	}
 
@@ -90,9 +90,8 @@ function rrt_extend(tree, neighbor, desiredIn, connectBool){
 	//Create a new vertex a distance of epsilon away from the neighbor
 
 	var theta = Math.atan(yDiff/xDiff);
-
-  var newY = Math.sin(theta)*epsilon+neighbor.vertex[2];
-  var newX = Math.cos(theta)*epsilon+neighbor.vertex[0];
+	var newY = Math.sin(theta)*epsilon+neighbor.vertex[2];
+	var newX = Math.cos(theta)*epsilon+neighbor.vertex[0];
 
 
   if((yDiff<0)&&(xDiff<0)){
@@ -156,14 +155,13 @@ function findRandom(){
 	var y = (Math.random()*yDist)-Math.abs(robot_boundary[0][2]);
 	var r = 0;
 	var p = Math.random()*7;
-	var y = 0;
+	var yaw = 0;
 	
 
-	var vertex = [x,0,y,r,p,y];
+	var vertex = [x,0,y,r,p,yaw];
 	for (x in robot.joints) {
         vertex.push(Math.random()*7);
     }
-
 	
 	return vertex;
 }
@@ -195,22 +193,18 @@ function rrt_planning_iteration() {
 
 	//extend treeA towards the random vertex one step
 	//Nearest neighbor is an object, vertex is just points
-  //////console.log("single extend");
-	rrt_extend(treeA, nearestNeighbor, vertex,false);
-	////console.log(new Error().lineNumber);
-	////console.log(treeA.vertices[treeA.newest].vertex);
-	add_config_origin_indicator_geom(treeA.vertices[treeA.newest]);
-	////console.log(new Error().lineNumber);
-	//Find the vertex on treeB that is closest to the newly created vertex on treeB
+	if(rrt_extend(treeA, nearestNeighbor, vertex, false)){
+		add_config_origin_indicator_geom(treeA.vertices[treeA.newest]);
+	}
+	
+	//Find the vertex on treeB that is closest to the newly created vertex on treeA
 	var nearestB = nearest_neighbor(treeA.vertices[treeA.newest].vertex,treeB);
-////console.log(new Error().lineNumber);
 	//While extension can proceed without collision, call rrt_extend extending treeA. If extend returns true, update nearestNeighbor to be the recently added element.
 
   var extendBool = true;
 
   var count = 0;
   while(extendBool){
-    //////console.log("extending");
 
     if (rrt_iterate && (Date.now()-cur_time > 10)) {
 

@@ -95,6 +95,8 @@ function tree_add_vertex(parent,child, tree){
 	tree.vertices[tree.newest+1].vertex = child;
 	tree.vertices[tree.newest+1].edges = [];
 	tree.vertices[tree.newest+1].parent = parent;
+	
+	draw_2D_edge_configurations(parent.vertex,tree.vertices[tree.newest+1].vertex);
 
 	//add the new child as a child of the parent
 	parent.edges[parent.edges.length] = tree.vertices[tree.newest+1];
