@@ -74,25 +74,24 @@ function getJacobianVector (zi, o_sub){
 }
 
 function pseudo_inverse(jacobian, target_pos, global_end){
-	alpha=0.7;
+	alpha=0.1;
 	var jacobianTrans = column_matrix_transpose(jacobian);
 	var jacobianRow = column_to_row(jacobian);
 	
 	var dx = new Array(6);
-	dx[0]=[target_pos[0]-global_end[0]];
-	dx[1]=[target_pos[1]-global_end[1]];
-	dx[2]=[target_pos[2]-global_end[2]];
+	dx[0]=[target_pos[0][0]-global_end[0][0]];
+	dx[1]=[target_pos[1][0]-global_end[1][0]];
+	dx[2]=[target_pos[2][0]-global_end[2][0]];
 	dx[3]=[0];
 	dx[4]=[0];
 	dx[5]=[0];
-
-	var pseudoInverseMult = numeric.dot(jacobianRow, jacobianTrans);
 	
-
+	pseudoInverseMult = matrix_multiply(jacobianTrans, jacobianRow);
 	
 	var pseudoInverse = numeric.inv(pseudoInverseMult);
 	
-	var jacobiansMult = numeric.dot(jacobianTrans, pseudoInverse);
+	
+	var jacobiansMult = matrix_multiply(pseudoInverse, jacobianTrans);
 	var matrix = numeric.dot(jacobiansMult, dx);
 	var finalMat = scalar_mult(matrix,alpha);
 	
@@ -119,8 +118,6 @@ function jacobian_transpose(jacobian, target_pos, global_end){
 
 	
 	var pseudo_scaled = scalar_mult(pseudo,alpha);
-	
-	console.log(pseudo_scaled);
 	
 	return pseudo_scaled;
 
@@ -177,7 +174,6 @@ function applyPseudo(pseudo, joint){
 	
 	while(workingJoint.parent!="base"){
 		workingJoint.control+=pseudo[count][0];
-		console.log(workingJoint.control);
 
 		count++;
 		if(workingJoint.parent!=robot.base){
@@ -222,11 +218,8 @@ function iterate_inverse_kinematics(target_pos, endeffector_joint, endeffector_l
 
 
 	
-	deltatheta = jacobian_transpose(jacobian, target_pos, endeffector_global_pos);
-	
-	
-
-	//var deltatheta = pseudo_inverse(jacobian, target_pos, endeffector_global_pos);
+	//var deltatheta = jacobian_transpose(jacobian, target_pos, endeffector_global_pos);
+	var deltatheta = pseudo_inverse(jacobian, target_pos, endeffector_global_pos);
 
 	applyPseudo(deltatheta,endeffector_joint);
 	//robot_pd_control();
