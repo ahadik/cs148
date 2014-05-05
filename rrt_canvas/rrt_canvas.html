@@ -127,8 +127,8 @@ function rrt_extend(tree, neighbor, desiredIn, connectBool){
 	if((distance<epsilon)&&connectBool){
 
 		isConnected = true;
-    rrt_iterate=false;
-		connect_trees(neighbor,desired);
+		rrt_iterate=false;
+		connect_trees(neighbor,desiredIn);
     console.log("CONNECTED");
     colorPath(neighbor,desiredIn);
 		return false;
