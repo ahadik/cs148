@@ -362,8 +362,8 @@
 	    
 	
 	    // inverse kinematics
-	    var ik_local;
-	    robot_inverse_kinematics(ik_target, "forearm_right_yaw", [[0],[0],[0.5],[1]]);
+	    var ik_local = [[0],[0],[0.5],[1]];
+	    robot_inverse_kinematics(ik_target, robot.joints["forearm_right_yaw"], ik_local);
 	
 	    // configuration space motion planning
 	    //robot_rrt_connect(q_desired);
@@ -380,28 +380,28 @@
 	function robot_pd_control(){
 
 		for(x in robot.joints){
-		var active = robot.joints[x];
-//		active.servo.desired = active.angle+0.1;
-		var kp = .1;
-		var tau = kp*(active.servo.desired-active.angle);
-		
-		active.servo.gain = tau;
-		
-		active.angle += active.servo.gain;
-		
-		
-		var joint_quaternion = quaternion_from_axisangle(active.angle, active.axis);
-		
-		var normalized_quaternion = quaternion_normalize(joint_quaternion);
-		
-
+			var active = robot.joints[x];
+	//		active.servo.desired = active.angle+0.1;
+			//var kp = .1;
+			//var tau = kp*(active.servo.desired-active.angle);
 			
-		var quaternion_rotate_matrix = quaternion_to_rotation_matrix(normalized_quaternion);
-
-		active.DOF.rotate = quaternion_rotate_matrix;
-		
-		
-		active.servo.gain = 0;
+			//active.servo.gain = tau;
+			
+			//active.angle += active.servo.gain;
+			
+			
+			var joint_quaternion = quaternion_from_axisangle(active.angle, active.axis);
+			
+			var normalized_quaternion = quaternion_normalize(joint_quaternion);
+			
+	
+				
+			var quaternion_rotate_matrix = quaternion_to_rotation_matrix(normalized_quaternion);
+	
+			active.DOF.rotate = quaternion_rotate_matrix;
+			
+			
+			active.servo.gain = 0;
 		}
 	}
 	

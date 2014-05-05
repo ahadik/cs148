@@ -19,7 +19,12 @@ function robot_apply_controls() {
 	
 	
 //	console.log(robot.joints[active_joint].servo.desired);
-	robot.joints[active_joint].servo.desired = robot.joints[active_joint].control;
+	//robot.joints[active_joint].servo.desired = robot.joints[active_joint].control;
+	
+	for (i in robot.joints){
+		robot.joints[i].angle = robot.joints[i].angle + robot.joints[i].control;
+		robot.joints[i].control = 0;
+	}
 	
 
     // move camera with robot base 
