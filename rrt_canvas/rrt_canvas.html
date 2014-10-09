@@ -113,50 +113,50 @@ function connect_trees(vertexA,vertexB){
 //neighbor is a vertex object, desired is just the configuration points
 function rrt_extend(tree, neighbor, desiredIn, connectBool){
 
-  var desired;
-  if(connectBool){
-    desired = desiredIn.vertex;
-  }else{
-    desired = desiredIn;
-  }
+	var desired;
+	if(connectBool){
+	desired = desiredIn.vertex;
+	}else{
+	desired = desiredIn;
+	}
 
 	var distance = getDistance(neighbor.vertex, desired);
-
-
-
+	
+	
+	
 	if((distance<epsilon)&&connectBool){
-
+	
 		isConnected = true;
 		rrt_iterate=false;
 		connect_trees(neighbor,desiredIn);
-    console.log("CONNECTED");
-    colorPath(neighbor,desiredIn);
+	console.log("CONNECTED");
+	colorPath(neighbor,desiredIn);
 		return false;
 	}
-
-
+	
+	
 	var xDiff = desired[0]-neighbor.vertex[0];
 	var yDiff = desired[1]-neighbor.vertex[1];
-
-
-
+	
+	
+	
 	//Create a new vertex a distance of epsilon away from the neighbor
-
+	
 	var theta = Math.atan(yDiff/xDiff);
 
-  var newY = Math.sin(theta)*epsilon+neighbor.vertex[1];
-  var newX = Math.cos(theta)*epsilon+neighbor.vertex[0];
-
-  if((yDiff<0)&&(xDiff<0)){
-    newY = -Math.sin(theta)*epsilon+neighbor.vertex[1];
-    newX = -Math.cos(theta)*epsilon+neighbor.vertex[0];
-  }
-
-
-  if((xDiff<0)&&(yDiff>0)){
-    newY = -Math.sin(theta)*epsilon+neighbor.vertex[1];
-    newX = -Math.cos(theta)*epsilon+neighbor.vertex[0];
-  }
+	var newY = Math.sin(theta)*epsilon+neighbor.vertex[1];
+	var newX = Math.cos(theta)*epsilon+neighbor.vertex[0];
+	
+	if((yDiff<0)&&(xDiff<0)){
+	newY = -Math.sin(theta)*epsilon+neighbor.vertex[1];
+	newX = -Math.cos(theta)*epsilon+neighbor.vertex[0];
+	}
+	
+	
+	if((xDiff<0)&&(yDiff>0)){
+	newY = -Math.sin(theta)*epsilon+neighbor.vertex[1];
+	newX = -Math.cos(theta)*epsilon+neighbor.vertex[0];
+	}
 
 	var newVertex = [newX,newY];
 

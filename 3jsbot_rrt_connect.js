@@ -53,8 +53,7 @@ function draw_highlighted_path(){
 	for(var i=0;i<robot_path.length;i++){
 
 		robot_path[i].geom.material.color = {r:1,g:0,b:0};
-	}
-	
+	}	
 }
 
 //neighbor is a vertex object, desired is just the configuration points
